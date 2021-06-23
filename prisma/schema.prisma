@@ -6,3 +6,73 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model categories {
+  id     Int      @id @default(autoincrement())
+  name   String
+  drinks drinks[]
+}
+
+model drinks {
+  id           Int               @id @default(autoincrement())
+  korean_name  String
+  english_name String?
+  description  String
+  is_new       Boolean
+  category_id  Int
+  categories   categories        @relation(fields: [category_id], references: [id])
+  nutrition    nutrition?
+  drink_images drink_images?
+  allergies    drink_allergies[]
+
+  @@index([korean_name, english_name, description])
+}
+
+model allergies {
+  id     Int               @id @default(autoincrement())
+  name   String
+  drinks drink_allergies[]
+}
+
+model drink_allergies {
+  allergy_id Int
+  allergies  allergies @relation(fields: [allergy_id], references: [id])
+  drink_id   Int
+  drinks     drinks    @relation(fields: [drink_id], references: [id])
+
+  @@id([allergy_id, drink_id])
+}
+
+model nutrition {
+  id               Int      @id @default(autoincrement())
+  one_serving_kcal Decimal?
+  sodium_mg        Decimal?
+  fat_g            Decimal?
+  sugars_g         Decimal?
+  protein_g        Decimal?
+  caffeine_mg      Decimal?
+  drink_id         Int
+  drinks           drinks   @relation(fields: [drink_id], references: [id])
+
+  @@index([one_serving_kcal, sodium_mg, fat_g, sugars_g, protein_g, caffeine_mg])
+}
+
+model drink_images {
+  id        Int    @id @default(autoincrement())
+  image_url String
+  drink_id  Int
+  drinks    drinks @relation(fields: [drink_id], references: [id])
+
+  @@index([image_url])
+}
+
+model users {
+  id         Int       @id @default(autoincrement())
+  email      String    @unique
+  password   String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime?
+
+  @@index([email, password, created_at, updated_at, deleted_at])
+}
