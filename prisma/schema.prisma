@@ -77,7 +77,7 @@ model users {
   users_name     String
   users_email    String    @unique
   users_password String
-  users_favorite String
+  users_favorite String?
   review         String?
   created_at     DateTime? @default(now())
 }
