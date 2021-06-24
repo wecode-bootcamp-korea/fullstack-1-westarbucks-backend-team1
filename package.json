@@ -1,27 +1,17 @@
 {
-  "name": "fullstack-1-westarbucks-backend-team1",
-  "version": "1.0.0",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wecode-bootcamp-korea/fullstack-1-westarbucks-backend-team1.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/wecode-bootcamp-korea/fullstack-1-westarbucks-backend-team1/issues"
-  },
-  "homepage": "https://github.com/wecode-bootcamp-korea/fullstack-1-westarbucks-backend-team1#readme",
   "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/node": "^7.14.7",
+    "@babel/preset-env": "^7.14.7",
     "dotenv": "^10.0.0",
+    "eslint": "^7.29.0",
+    "eslint-config-strongloop": "^2.1.0",
     "prisma": "^2.25.0"
   },
   "dependencies": {
     "@prisma/client": "^2.25.0",
     "body-parser": "^1.19.0",
+    "express": "^4.17.1",
     "nodemon": "^2.0.7"
   }
 }

@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
@@ -8,58 +11,24 @@ generator client {
 }
 
 model categories {
-  id         Int      @id @default(autoincrement())
-  name       String   @db.VarChar(50)
-  created_at DateTime @default(now())
-  drinks     drinks[]
+  id            Int      @id @default(autoincrement())
+  category_name String
+  created_at    DateTime @default(now())
+  drinks        drinks[]
 }
 
 model drinks {
-  id           Int               @id @default(autoincrement())
-  korean_name  String            @db.VarChar(50)
-  english_name String?           @db.VarChar(100)
-  description  String            @db.VarChar(1000)
-  is_new       Boolean
-  category_id  Int
-  created_at   DateTime          @default(now())
-  categories   categories        @relation(fields: [category_id], references: [id])
-  nutrition    nutrition?
-  drink_images drink_images[]
-  allergies    drink_allergies[]
-
-  @@index([korean_name, english_name, description])
-}
-
-model allergies {
-  id         Int               @id @default(autoincrement())
-  name       String            @db.VarChar(50)
-  created_at DateTime          @default(now())
-  drinks     drink_allergies[]
-}
-
-model drink_allergies {
-  allergy_id Int
-  drink_id   Int
-  created_at DateTime  @default(now())
-  allergies  allergies @relation(fields: [allergy_id], references: [id])
-  drinks     drinks    @relation(fields: [drink_id], references: [id])
-
-  @@id([allergy_id, drink_id])
-}
-
-model nutrition {
-  id               Int      @id @default(autoincrement())
-  one_serving_kcal Decimal?
-  sodium_mg        Decimal?
-  fat_g            Decimal?
-  sugars_g         Decimal?
-  protein_g        Decimal?
-  caffeine_mg      Decimal?
-  drink_id         Int
-  created_at       DateTime @default(now())
-  drinks           drinks   @relation(fields: [drink_id], references: [id])
-
-  @@index([one_serving_kcal, sodium_mg, fat_g, sugars_g, protein_g, caffeine_mg])
+  id              Int               @id @default(autoincrement())
+  korean_name     String
+  english_name    String?
+  category_id     Int
+  description     String            @db.VarChar(1000)
+  is_new          Boolean
+  created_at      DateTime          @default(now())
+  categories      categories        @relation(fields: [category_id], references: [id])
+  drink_images    drink_images[]
+  drink_allergies drink_allergies[]
+  nutritions      nutritions?
 }
 
 model drink_images {
@@ -68,17 +37,42 @@ model drink_images {
   drink_id   Int
   created_at DateTime @default(now())
   drinks     drinks   @relation(fields: [drink_id], references: [id])
+}
 
-  @@index([image_url])
+model allergies {
+  id              Int               @id @default(autoincrement())
+  allergy         String
+  created_at      DateTime          @default(now())
+  drink_allergies drink_allergies[]
+}
+
+model drink_allergies {
+  id         Int       @id @default(autoincrement())
+  drink_id   Int
+  allergy_id Int
+  created_at DateTime  @default(now())
+  allergies  allergies @relation(fields: [allergy_id], references: [id])
+  drinks     drinks    @relation(fields: [drink_id], references: [id])
+}
+
+model nutritions {
+  id               Int      @id @default(autoincrement())
+  one_serving_kcal Decimal?
+  sodium_mg        Decimal?
+  saturated_fat_g  Decimal?
+  sugars_g         Decimal?
+  protein_g        Decimal?
+  caffeine_mg      Decimal?
+  drink_id         Int
+  created_at       DateTime @default(now())
+  drinks           drinks   @relation(fields: [drink_id], references: [id])
 }
 
 model users {
-  id         Int       @id @default(autoincrement())
-  email      String    @unique @db.VarChar(100)
-  password   String    @db.VarChar(20)
-  created_at DateTime  @default(now())
-  updated_at DateTime? @updatedAt
-  deleted_at DateTime?
-
-  @@index([email, password])
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String
+  favorite   String?
+  created_at DateTime @default(now())
 }
