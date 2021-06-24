@@ -10,7 +10,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model category {
+model categories {
   id            Int      @id @default(autoincrement())
   category_name String
   created_at    DateTime @default(now())
@@ -18,35 +18,35 @@ model category {
 }
 
 model drinks {
-  id               Int                @id @default(autoincrement())
-  korean_name      String
-  english_name     String?
-  category_id      Int
-  description      String             @db.VarChar(1000)
-  is_new           Boolean
-  created_at       DateTime           @default(now())
-  category         category           @relation(fields: [category_id], references: [id])
-  drinks_images    drink_images[]
-  drinks_allergies drinks_allergies[]
-  nutrition        nutrition?
+  id              Int               @id @default(autoincrement())
+  korean_name     String
+  english_name    String?
+  category_id     Int
+  description     String            @db.VarChar(1000)
+  is_new          Boolean
+  created_at      DateTime          @default(now())
+  categories      categories        @relation(fields: [category_id], references: [id])
+  drink_images    drink_images[]
+  drink_allergies drink_allergies[]
+  nutritions      nutritions?
 }
 
 model drink_images {
   id         Int      @id @default(autoincrement())
   image_url  String   @db.VarChar(3000)
-  drinks_id  Int
+  drink_id   Int
   created_at DateTime @default(now())
-  drinks     drinks   @relation(fields: [drinks_id], references: [id])
+  drinks     drinks   @relation(fields: [drink_id], references: [id])
 }
 
 model allergies {
-  id               Int                @id @default(autoincrement())
-  allergy          String
-  created_at       DateTime           @default(now())
-  drinks_allergies drinks_allergies[]
+  id              Int               @id @default(autoincrement())
+  allergy         String
+  created_at      DateTime          @default(now())
+  drink_allergies drink_allergies[]
 }
 
-model drinks_allergies {
+model drink_allergies {
   id         Int       @id @default(autoincrement())
   drink_id   Int
   allergy_id Int
@@ -55,24 +55,24 @@ model drinks_allergies {
   drinks     drinks    @relation(fields: [drink_id], references: [id])
 }
 
-model nutrition {
-  id              Int      @id @default(autoincrement())
-  kcal            String
-  sodium_mg       String
-  saturated_fat_g String
-  sugar_g         String
-  protein_g       String
-  caffeine_mg     String
-  drink_id        Int
-  created_at      DateTime @default(now())
-  drinks          drinks   @relation(fields: [drink_id], references: [id])
+model nutritions {
+  id               Int      @id @default(autoincrement())
+  one_serving_kcal Decimal?
+  sodium_mg        Decimal?
+  saturated_fat_g  Decimal?
+  sugars_g         Decimal?
+  protein_g        Decimal?
+  caffeine_mg      Decimal?
+  drink_id         Int
+  created_at       DateTime @default(now())
+  drinks           drinks   @relation(fields: [drink_id], references: [id])
 }
 
 model users {
-  id             Int      @id @default(autoincrement())
-  name           String
-  email          String   @unique @db.VarChar(100)
-  password       String   @db.VarChar(30)
-  users_favorite String?
-  created_at     DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String
+  favorite   String?
+  created_at DateTime @default(now())
 }
