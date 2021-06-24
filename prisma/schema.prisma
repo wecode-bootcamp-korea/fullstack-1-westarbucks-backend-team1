@@ -8,9 +8,10 @@ generator client {
 }
 
 model categories {
-  id     Int      @id @default(autoincrement())
-  name   String
-  drinks drinks[]
+  id         Int      @id @default(autoincrement())
+  name       String
+  created_at DateTime @default(now())
+  drinks     drinks[]
 }
 
 model drinks {
@@ -20,6 +21,7 @@ model drinks {
   description  String
   is_new       Boolean
   category_id  Int
+  created_at   DateTime          @default(now())
   categories   categories        @relation(fields: [category_id], references: [id])
   nutrition    nutrition?
   drink_images drink_images?
@@ -29,9 +31,10 @@ model drinks {
 }
 
 model allergies {
-  id     Int               @id @default(autoincrement())
-  name   String
-  drinks drink_allergies[]
+  id         Int               @id @default(autoincrement())
+  name       String
+  created_at DateTime          @default(now())
+  drinks     drink_allergies[]
 }
 
 model drink_allergies {
@@ -39,6 +42,7 @@ model drink_allergies {
   allergies  allergies @relation(fields: [allergy_id], references: [id])
   drink_id   Int
   drinks     drinks    @relation(fields: [drink_id], references: [id])
+  created_at DateTime  @default(now())
 
   @@id([allergy_id, drink_id])
 }
@@ -52,16 +56,18 @@ model nutrition {
   protein_g        Decimal?
   caffeine_mg      Decimal?
   drink_id         Int
+  created_at       DateTime @default(now())
   drinks           drinks   @relation(fields: [drink_id], references: [id])
 
   @@index([one_serving_kcal, sodium_mg, fat_g, sugars_g, protein_g, caffeine_mg])
 }
 
 model drink_images {
-  id        Int    @id @default(autoincrement())
-  image_url String
-  drink_id  Int
-  drinks    drinks @relation(fields: [drink_id], references: [id])
+  id         Int      @id @default(autoincrement())
+  image_url  String
+  drink_id   Int
+  created_at DateTime @default(now())
+  drinks     drinks   @relation(fields: [drink_id], references: [id])
 
   @@index([image_url])
 }
