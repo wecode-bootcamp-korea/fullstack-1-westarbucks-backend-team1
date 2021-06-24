@@ -9,16 +9,16 @@ generator client {
 
 model categories {
   id         Int      @id @default(autoincrement())
-  name       String
+  name       String   @db.VarChar(50)
   created_at DateTime @default(now())
   drinks     drinks[]
 }
 
 model drinks {
   id           Int               @id @default(autoincrement())
-  korean_name  String
-  english_name String?
-  description  String
+  korean_name  String            @db.VarChar(50)
+  english_name String?           @db.VarChar(100)
+  description  String            @db.VarChar(1000)
   is_new       Boolean
   category_id  Int
   created_at   DateTime          @default(now())
@@ -32,7 +32,7 @@ model drinks {
 
 model allergies {
   id         Int               @id @default(autoincrement())
-  name       String
+  name       String            @db.VarChar(50)
   created_at DateTime          @default(now())
   drinks     drink_allergies[]
 }
@@ -64,7 +64,7 @@ model nutrition {
 
 model drink_images {
   id         Int      @id @default(autoincrement())
-  image_url  String
+  image_url  String   @db.VarChar(3000)
   drink_id   Int
   created_at DateTime @default(now())
   drinks     drinks   @relation(fields: [drink_id], references: [id])
@@ -74,11 +74,11 @@ model drink_images {
 
 model users {
   id         Int       @id @default(autoincrement())
-  email      String    @unique
-  password   String
+  email      String    @unique @db.VarChar(100)
+  password   String    @db.VarChar(20)
   created_at DateTime  @default(now())
   updated_at DateTime? @updatedAt
   deleted_at DateTime?
 
-  @@index([email, password, created_at, updated_at, deleted_at])
+  @@index([email, password])
 }
