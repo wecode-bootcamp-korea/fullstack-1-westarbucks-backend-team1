@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export const getUsers = async (req, res) => {
+export const getUsersList = async (req, res) => {
   try {
     const users = await prisma.$queryRaw(`SELECT * FROM users;`);
 
@@ -12,7 +12,7 @@ export const getUsers = async (req, res) => {
   }
 };
 
-export const signup = async (req, res) => {
+export const signUp = async (req, res) => {
   try {
     const { email, name, password } = req.body;
 
