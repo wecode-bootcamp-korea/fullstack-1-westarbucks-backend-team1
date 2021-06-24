@@ -2,6 +2,16 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+export const getUsers = async (req, res) => {
+  try {
+    const users = await prisma.$queryRaw(`SELECT * FROM users;`);
+
+    res.status(201).json({ users });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 export const signup = async (req, res) => {
   try {
     const { email, name, password } = req.body;
