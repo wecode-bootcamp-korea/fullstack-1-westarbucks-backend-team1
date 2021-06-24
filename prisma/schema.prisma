@@ -24,7 +24,7 @@ model drinks {
   created_at   DateTime          @default(now())
   categories   categories        @relation(fields: [category_id], references: [id])
   nutrition    nutrition?
-  drink_images drink_images?
+  drink_images drink_images[]
   allergies    drink_allergies[]
 
   @@index([korean_name, english_name, description])
