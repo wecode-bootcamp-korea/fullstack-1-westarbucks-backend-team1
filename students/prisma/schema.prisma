@@ -11,9 +11,9 @@ generator client {
 }
 
 model categories{
-  id         Int       @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   name       String 
-  created_at DateTime? @default(now())
+  created_at DateTime @default(now())
   drinks drinks[]
 }
 
@@ -22,21 +22,20 @@ model drinks{
   korean_name String
   english_name String
   description String
-  created_at DateTime? @default(now())
+  created_at DateTime @default(now())
   category_id Int
 
   drink_images drink_images[]
   drink_allergies drink_allergies[]
-  nutritions nutritions[]
+  nutritions nutritions?
   categories categories @relation(fields: [category_id], references: [id])
 
-  @@index([category_id], name: "category_id")
 }
 
 model allergies{
   id Int @id @default(autoincrement())
   name String
-  created_at DateTime? @default(now())
+  created_at DateTime @default(now())
 
   drink_allergies drink_allergies[]
 }
@@ -45,13 +44,11 @@ model drink_allergies{
   id Int @id @default(autoincrement())
   drink_id Int
   allergy_id Int
-  created_at DateTime? @default(now())
+  created_at DateTime @default(now())
 
   drinks drinks @relation(fields: [drink_id], references: [id])
   allergies allergies @relation(fields: [allergy_id], references: [id])
 
-  @@index([drink_id], name: "drink_id")
-  @@index([allergy_id], name: "allergy_id")
 }
 
 model nutritions{
@@ -62,23 +59,20 @@ model nutritions{
   sugars_g Decimal?
   protein_g Decimal?
   caffeine_mg Decimal?
-  created_at DateTime? @default(now())
-  drink_id Int
+  created_at DateTime @default(now())
+  drinks_id Int
 
-  drinks drinks @relation(fields: [drink_id], references: [id])
-
-  @@index([drink_id], name: "drink_id") 
+  drinks drinks @relation(fields: [drinks_id], references: [id])
 }
 
 model drink_images{
   id Int @id @default(autoincrement())
-  image_url String
+  image_url String @db.VarChar(3000)
   drink_id Int
-  created_at DateTime? @default(now())
+  created_at DateTime @default(now())
 
   drinks drinks @relation(fields: [drink_id], references: [id])
 
-  @@index([drink_id], name: "drink_id")
 }
 
 model users{
@@ -86,5 +80,6 @@ model users{
   email String @unique
   password String
   nickname String?
-  created_at DateTime? @default(now())
+  created_at DateTime @default(now())
 }
+

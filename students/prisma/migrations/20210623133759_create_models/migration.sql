@@ -12,7 +12,7 @@ CREATE TABLE `drinks` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `korean_name` VARCHAR(191) NOT NULL,
     `english_name` VARCHAR(191) NOT NULL,
-    `description` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(2000) NOT NULL,
     `created_at` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
     `category_id` INTEGER NOT NULL,
 
@@ -60,7 +60,7 @@ CREATE TABLE `nutritions` (
 -- CreateTable
 CREATE TABLE `drink_images` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `image_url` VARCHAR(191) NOT NULL,
+    `image_url` VARCHAR(3000) NOT NULL,
     `drink_id` INTEGER NOT NULL,
     `created_at` DATETIME(3) DEFAULT CURRENT_TIMESTAMP(3),
 
