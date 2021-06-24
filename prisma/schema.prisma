@@ -23,11 +23,11 @@ model drinks {
   category_id         Int
   description         String
   is_new              Boolean
-  created_at          DateTime?          @default(now())
+  created_at          DateTime           @default(now())
   category            category           @relation(fields: [category_id], references: [id])
   drinks_images       drink_images[]
   drinks_allergies    drinks_allergies[]
-  nutrition           nutrition[]
+  nutrition           nutrition?
 
   @@index([category_id], name: "category_id")
 }
@@ -73,11 +73,11 @@ model nutrition {
 }
 
 model users {
-  id             Int       @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   users_name     String
-  users_email    String    @unique
+  users_email    String   @unique
   users_password String
   users_favorite String?
   review         String?
-  created_at     DateTime? @default(now())
+  created_at     DateTime @default(now())
 }
