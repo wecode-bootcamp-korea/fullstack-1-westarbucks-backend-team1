@@ -13,6 +13,7 @@ generator client {
 model category {
   id            Int      @id @default(autoincrement())
   category_name String
+  created_at    DateTime @default(now())
   drinks        drinks[]
 }
 
@@ -33,10 +34,11 @@ model drinks {
 }
 
 model drink_images {
-  id        Int    @id @default(autoincrement())
-  image_url String @db.VarChar(3000)
-  drinks_id Int
-  drinks    drinks @relation(fields: [drinks_id], references: [id])
+  id         Int      @id @default(autoincrement())
+  image_url  String   @db.VarChar(3000)
+  drinks_id  Int
+  created_at DateTime @default(now())
+  drinks     drinks   @relation(fields: [drinks_id], references: [id])
 
   @@index([drinks_id], name: "drinks_id")
 }
@@ -44,6 +46,7 @@ model drink_images {
 model allergies {
   id               Int                @id @default(autoincrement())
   allergy          String
+  created_at       DateTime           @default(now())
   drinks_allergies drinks_allergies[]
 }
 
@@ -51,6 +54,7 @@ model drinks_allergies {
   id         Int       @id @default(autoincrement())
   drink_id   Int
   allergy_id Int
+  created_at DateTime  @default(now())
   allergies  allergies @relation(fields: [allergy_id], references: [id])
   drinks     drinks    @relation(fields: [drink_id], references: [id])
 
@@ -59,7 +63,7 @@ model drinks_allergies {
 }
 
 model nutrition {
-  id            Int    @id @default(autoincrement())
+  id            Int      @id @default(autoincrement())
   kcal          String
   sodium        String
   saturated_fat String
@@ -67,7 +71,8 @@ model nutrition {
   protein       String
   caffeine      String
   drink_id      Int
-  drinks        drinks @relation(fields: [drink_id], references: [id])
+  created_at    DateTime @default(now())
+  drinks        drinks   @relation(fields: [drink_id], references: [id])
 
   @@index([drink_id], name: "drink_id")
 }
