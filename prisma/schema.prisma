@@ -56,16 +56,16 @@ model drinks_allergies {
 }
 
 model nutrition {
-  id            Int      @id @default(autoincrement())
-  kcal          String
-  sodium        String
-  saturated_fat String
-  sugar         String
-  protein       String
-  caffeine      String
-  drink_id      Int
-  created_at    DateTime @default(now())
-  drinks        drinks   @relation(fields: [drink_id], references: [id])
+  id              Int      @id @default(autoincrement())
+  kcal            String
+  sodium_mg       String
+  saturated_fat_g String
+  sugar_g         String
+  protein_g       String
+  caffeine_mg     String
+  drink_id        Int
+  created_at      DateTime @default(now())
+  drinks          drinks   @relation(fields: [drink_id], references: [id])
 }
 
 model users {
