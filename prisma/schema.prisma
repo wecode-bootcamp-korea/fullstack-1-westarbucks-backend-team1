@@ -34,7 +34,7 @@ model drinks {
 
 model drink_images {
   id        Int    @id @default(autoincrement())
-  image_url String @db.VarChar(1500)
+  image_url String @db.VarChar(3000)
   drinks_id Int
   drinks    drinks @relation(fields: [drinks_id], references: [id])
 
