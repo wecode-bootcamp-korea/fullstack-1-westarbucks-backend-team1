@@ -18,17 +18,17 @@ model category {
 }
 
 model drinks {
-  id                  Int                @id @default(autoincrement())
-  drinks_name         String
-  drinks_english_name String?
-  category_id         Int
-  description         String             @db.VarChar(300)
-  is_new              Boolean
-  created_at          DateTime           @default(now())
-  category            category           @relation(fields: [category_id], references: [id])
-  drinks_images       drink_images[]
-  drinks_allergies    drinks_allergies[]
-  nutrition           nutrition?
+  id               Int                @id @default(autoincrement())
+  korean_name      String
+  english_name     String?
+  category_id      Int
+  description      String             @db.VarChar(1000)
+  is_new           Boolean
+  created_at       DateTime           @default(now())
+  category         category           @relation(fields: [category_id], references: [id])
+  drinks_images    drink_images[]
+  drinks_allergies drinks_allergies[]
+  nutrition        nutrition?
 }
 
 model drink_images {
@@ -71,8 +71,8 @@ model nutrition {
 model users {
   id             Int      @id @default(autoincrement())
   name           String
-  email          String   @unique
-  password       String
+  email          String   @unique @db.VarChar(100)
+  password       String   @db.VarChar(30)
   users_favorite String?
   created_at     DateTime @default(now())
 }
