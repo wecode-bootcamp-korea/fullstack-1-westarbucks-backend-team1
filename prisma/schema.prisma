@@ -39,10 +39,10 @@ model allergies {
 
 model drink_allergies {
   allergy_id Int
-  allergies  allergies @relation(fields: [allergy_id], references: [id])
   drink_id   Int
-  drinks     drinks    @relation(fields: [drink_id], references: [id])
   created_at DateTime  @default(now())
+  allergies  allergies @relation(fields: [allergy_id], references: [id])
+  drinks     drinks    @relation(fields: [drink_id], references: [id])
 
   @@id([allergy_id, drink_id])
 }
