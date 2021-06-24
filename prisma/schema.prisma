@@ -21,7 +21,7 @@ model drinks {
   drinks_name         String
   drinks_english_name String?
   category_id         Int
-  description         String
+  description         String             @db.VarChar(300)
   is_new              Boolean
   created_at          DateTime           @default(now())
   category            category           @relation(fields: [category_id], references: [id])
@@ -34,7 +34,7 @@ model drinks {
 
 model drink_images {
   id        Int    @id @default(autoincrement())
-  image_url String
+  image_url String @db.VarChar(1500)
   drinks_id Int
   drinks    drinks @relation(fields: [drinks_id], references: [id])
 
