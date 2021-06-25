@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {PrismaClient} from '@prisma/client';
 const prisma = new PrismaClient;
 
@@ -19,7 +20,7 @@ const signUp = async(req, res) => {
 
     res.status(201).json({ message: '회원가입 성공!!'});
   } catch (err) {
-    res.status(500).json({message: err.message});
+    res.status(500).json({message: '🚨ALERT!!!!ALERT!!!!THIS IS ERROR!!!!!🚨'});
   }
 };
 
