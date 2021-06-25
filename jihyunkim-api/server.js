@@ -11,7 +11,7 @@ app.use(express.json());
 app.use('/', route);
 
 const server = http.createServer(app);
-const PORT = 8000;
+const PORT = process.env.PORT;
 
 const start = async () => {
   try {
