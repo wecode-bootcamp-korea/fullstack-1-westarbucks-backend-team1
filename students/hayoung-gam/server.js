@@ -2,15 +2,17 @@ import http from 'http';
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import usersRouter from './routers/usersRouter';
+import drinksRouter from './routers/drinksRouter';
 
-const PORT = 8000;
 const prisma = new PrismaClient();
 
 const app = express();
 const server = http.createServer(app);
+const PORT = process.env.PORT;
 
 app.use(express.json());
 app.use('/users', usersRouter);
+app.use('/drinks', drinksRouter);
 
 const start = async () => {
   try {
