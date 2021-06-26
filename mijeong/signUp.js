@@ -4,18 +4,19 @@ const prisma = new PrismaClient;
 
 const signUp = async(req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, name } = req.body;
 
     const user = await prisma.$queryRaw(`
-      SELECT * FROM users WHERE email ='${email}'
+      SELECT * FROM users WHERE email ='${email}';
     `);
 
-    if (user) {
+    if (user.length) {
       res.status(400).json({ message: 'ALREADY_EXCISTING_USER'});
     }
 
     const userCreated = await prisma.$queryRaw(`
-      INSERT INTO users(email, password) VALUES ('${email}', '${password}')
+      INSERT INTO users(email, password, name) 
+      VALUES ('${email}', '${password}', '${name}');
     `);
 
     res.status(201).json({ message: '회원가입 성공!!'});
