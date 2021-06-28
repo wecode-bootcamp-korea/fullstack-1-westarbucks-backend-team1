@@ -20,10 +20,5 @@
   },
   "scripts": {
     "dev": "nodemon --exec babel-node students/hayoung-gam/server.js"
-  },
-  "babel": {
-    "presets": [
-      "@babel/env"
-    ]
   }
 }
