@@ -2,6 +2,7 @@ import express from 'express';
 import routes from './routes';
 import cors from 'cors';
 import morgan from 'morgan';
+import generalErrorHandler from './utils/generalErrorHandler';
 
 const app = express();
 const logger = morgan('dev');
@@ -11,10 +12,6 @@ app.use(express.json());
 app.use(logger);
 app.use(routes);
 
-app.use((err, req, res, next) => {
-  const { status, message } = err;
-  console.err(err);
-  res.status(status || 500).json({ message });
-});
+app.use(generalErrorHandler);
 
 export default app;

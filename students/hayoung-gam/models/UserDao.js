@@ -1,5 +1,6 @@
 import prisma from '../prisma';
 import bcrypt from 'bcrypt';
+import errorGenerator from '../utils/errorGenerator';
 
 const getUsersList = async () => {
   const users = await prisma.$queryRaw(`SELECT * FROM users;`);
@@ -21,21 +22,22 @@ const postSignUp = async (req) => {
   return signUp;
 };
 
-const postLogIn = async (req) => {
+const postLogIn = async (req, res) => {
   const { email, name, password } = req.body;
 
   const userExists = await prisma.users.findUnique({ where: { email } });
 
-  if (!userExists) {
-    const error = new Error('USER DOES NOT EXISTS.');
-    throw error;
-  }
+  if (!userExists)
+    errorGenerator({ statusCode: 404, message: 'USER DOES NOT EXISTS.' });
 
   const { email: id, password: hashedPassword } = userExists;
 
-  const match = await bcrypt.compare(password, hashedPassword);
+  const isMatch = await bcrypt.compare(password, hashedPassword);
 
-  return match;
+  if (!isMatch)
+    errorGenerator({ statusCode: 400, message: 'INCORRECT PASSWORD.' });
+
+  return isMatch;
 };
 
 export default { getUsersList, postSignUp, postLogIn };
