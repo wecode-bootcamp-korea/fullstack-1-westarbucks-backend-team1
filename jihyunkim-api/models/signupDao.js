@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import prisma from '../prisma';
 import bcrypt from 'bcrypt';
-// import jwt from 'jsonwebtoken';
 
 const userSignUp = async (req) => {
   const { email, name, password } = req.body;
@@ -35,8 +34,6 @@ const userLogin = async (req, res) => {
   }
 
   const { id, password: hashedPassword } = usersRegister;
-  // const token = jwt.sign({ id: 22 }, 'my_secret_key');
-  // console.log(token);
 
   const verifypassword = await bcrypt.compare(password, hashedPassword);
 
