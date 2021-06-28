@@ -8,4 +8,8 @@ const postSignUp = async (req) => {
   return await UserDao.postSignUp(req);
 };
 
-export default { getUsersList, postSignUp };
+const postLogIn = async (req, res) => {
+  return await UserDao.postLogIn(req);
+};
+
+export default { getUsersList, postSignUp, postLogIn };

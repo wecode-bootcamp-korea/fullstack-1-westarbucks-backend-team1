@@ -21,4 +21,21 @@ const postSignUp = async (req) => {
   return signUp;
 };
 
-export default { getUsersList, postSignUp };
+const postLogIn = async (req, res) => {
+  const { email, name, password } = req.body;
+
+  const userExists = await prisma.users.findUnique({ where: { email } });
+
+  if (!userExists) {
+    const error = new Error('USER DOES NOT EXISTS.');
+    throw error;
+  }
+
+  const { email: id, password: hashedPassword } = userExists;
+
+  const match = await bcrypt.compare(password, hashedPassword);
+
+  return match;
+};
+
+export default { getUsersList, postSignUp, postLogIn };

@@ -22,4 +22,16 @@ const postSignUp = async (req, res) => {
   }
 };
 
-export default { getUsersList, postSignUp };
+const postLogIn = async (req, res) => {
+  try {
+    const { email, name, password } = req.body;
+
+    const check = await UserService.postLogIn(req, res);
+
+    res.status(201).json({ email, name, password });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export default { getUsersList, postSignUp, postLogIn };
