@@ -1,7 +1,7 @@
 import { usersDao } from '../models';
 
-const allUsers = async () => {
-  return await usersDao.allUsers();
+const viewAllUsers = async () => {
+  return await usersDao.viewAllUsers();
 };
 
-export default { allUsers };
+export default { viewAllUsers };

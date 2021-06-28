@@ -1,8 +1,8 @@
 import { usersService } from '../services';
 
-const allUsers = async (req, res) => {
+const viewAllUsers = async (req, res) => {
   try {
-    const users = await usersService.allUsers();
+    const users = await usersService.viewAllUsers();
 
     res.status(201).json({ users });
   } catch (err) {
@@ -10,4 +10,4 @@ const allUsers = async (req, res) => {
   }
 };
 
-export default { allUsers };
+export default { viewAllUsers };
