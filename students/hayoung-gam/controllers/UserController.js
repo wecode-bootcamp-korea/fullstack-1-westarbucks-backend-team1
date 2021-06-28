@@ -26,7 +26,7 @@ const postLogIn = async (req, res) => {
   try {
     const { email, name, password } = req.body;
 
-    const check = await UserService.postLogIn(req, res);
+    const check = await UserService.postLogIn(req);
 
     res.status(201).json({ email, name, password });
   } catch (err) {

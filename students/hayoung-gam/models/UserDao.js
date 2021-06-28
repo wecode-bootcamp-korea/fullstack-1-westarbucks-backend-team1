@@ -21,7 +21,7 @@ const postSignUp = async (req) => {
   return signUp;
 };
 
-const postLogIn = async (req, res) => {
+const postLogIn = async (req) => {
   const { email, name, password } = req.body;
 
   const userExists = await prisma.users.findUnique({ where: { email } });

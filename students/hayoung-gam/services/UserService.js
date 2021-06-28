@@ -8,7 +8,7 @@ const postSignUp = async (req) => {
   return await UserDao.postSignUp(req);
 };
 
-const postLogIn = async (req, res) => {
+const postLogIn = async (req) => {
   return await UserDao.postLogIn(req);
 };
 
