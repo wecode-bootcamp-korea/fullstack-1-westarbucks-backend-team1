@@ -12,4 +12,15 @@ const userSignUp = async (req, res) => {
   }
 };
 
-export default { userSignUp };
+const userLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const usersRegister = await signupService.userLogin(req);
+
+    res.status(201).json({ email, password });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export default { userSignUp, userLogin };

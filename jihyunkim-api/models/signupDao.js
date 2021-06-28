@@ -16,4 +16,21 @@ const userSignUp = async (req) => {
   return createdUser;
 };
 
-export default { userSignUp };
+const userLogin = async (req, res) => {
+  const { email, password } = req.body;
+  const usersRegister = await prisma.users.findUnique({ where: { email } });
+
+  if (!usersRegister) {
+    const error = new Error('해당 유저 정보가 존재하지 않습니다');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  const { id, password: hashedPassword } = usersRegister;
+
+  const verifypassword = await bcrypt.compare(password, hashedPassword);
+
+  return verifypassword;
+};
+
+export default { userSignUp, userLogin };

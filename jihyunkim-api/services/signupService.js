@@ -4,4 +4,8 @@ const userSignUp = async (req) => {
   return await signupDao.userSignUp(req);
 };
 
-export default { userSignUp };
+const userLogin = async (req) => {
+  return await signupDao.userLogin(req);
+};
+
+export default { userSignUp, userLogin };
