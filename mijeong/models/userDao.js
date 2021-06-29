@@ -1,16 +1,24 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import prisma from '../../prisma';
+import prisma from '../prisma';
+// import bcrypt from 'bcrypt';
 
 const showAllUsers = async() => {
-  const users = await prisma.$queryRaw(`
-      SELECT * FROM users
-    `);
+  console.log('this is dao');
+  const alluser = await prisma.$queryRaw('SELECT * FROM users');
 
-  return users;
+  return alluser;
 };
 
 const signUp = async(req) => {
   const { email, password, name } = req.body;
+
+  // const saltRounds = 10;
+
+  // const salt = await bcrypt.genSalt(saltRounds);
+  // const hashedPw = await bcrypt.hash('hello', salt);
+  // console.log(bcrypt.compareSync('hello', hash));
+
 
   const user = await prisma.$queryRaw(`
     INSERT INTO users(email, password, name)
@@ -20,19 +28,27 @@ const signUp = async(req) => {
       WHERE email = '${email}' AND password = '${password}')
   `);
 
-  return signUp;
+  return user;
 };
+
 
 const logIn = async(req) => {
   const { email, password, name } = req.body;
 
   // 해당 이메일 가진 유저 있는지 확인
-  const userExists = await prisma.$exists.user({ email });
+  const alreadyUser = await prisma.$exists.user({ email });
 
-  if (!userExists) {
+  if (!alreadyUser) {
     const error = new Error('Oops! Plz Sign Up FIRST!');
-    return error;
+    throw error;
   }
+
+  // const { email: id, password: hashedPw} = alreadyUser;
+
+  // const checkPassword = await bcrypt.compare(password, hashedPw);
+
+  // return checkPassword;
 };
+
 
 export default { showAllUsers, signUp, logIn };

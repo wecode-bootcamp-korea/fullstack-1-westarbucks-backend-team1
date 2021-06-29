@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import http from 'http';
 import app from './app';
-import prisma from '../prisma';
+import prisma from './prisma';
 
 const server = http.createServer(app);
 const PORT = process.env.PORT;

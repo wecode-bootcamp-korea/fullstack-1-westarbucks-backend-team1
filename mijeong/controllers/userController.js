@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { userService } from '../services';
+import { userService } from '../services/userService';
 
 const showAllUsers = async(req, res) => {
   try {
-    const users = await userService.showAllUsers();
+    const users = await userService.showAllUsers(req);
 
     res.status(201).json({ users });
   } catch (err) {

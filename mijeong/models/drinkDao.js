@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import prisma from '../../prisma';
+import prisma from '../prisma';
 
 const drinksList = async() => {
   const drinks = await prisma.$queryRaw(`

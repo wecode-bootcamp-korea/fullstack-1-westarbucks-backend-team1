@@ -1,4 +1,4 @@
-import { drinkDao } from '../models/drinkDao';
+import { drinkDao } from '../models';
 
 const drinksList = async() => {
   return await drinkDao.drinksList();

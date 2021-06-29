@@ -24,6 +24,5 @@
     "presets": [
       "@babel/env"
     ]
-  },
-  "type": "module"
+  }
 }
