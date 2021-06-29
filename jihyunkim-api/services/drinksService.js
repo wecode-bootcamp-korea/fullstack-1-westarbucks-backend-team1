@@ -1,7 +1,7 @@
 import { drinksDao } from '../models';
 
-const drinksInfo = async () => {
-  return await drinksDao.drinksInfo();
+const viewAllDrinks = async () => {
+  return await drinksDao.viewAllDrinks();
 };
 
-export default { drinksInfo };
+export default { viewAllDrinks };

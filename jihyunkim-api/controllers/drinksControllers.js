@@ -1,13 +1,14 @@
+/* eslint-disable no-unused-vars */
 import { drinksService } from '../services';
 
-const drinksInfo = async (req, res) => {
+const viewAllDrinks = async (req, res) => {
   try {
-    const drinks = await drinksService.drinksInfo();
+    const drinks = await drinksService.viewAllDrinks();
 
-    res.status(201).json({ drinks });
+    res.status(200).json({ drinks });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-export default { drinksInfo };
+export default { viewAllDrinks };
