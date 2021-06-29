@@ -5,7 +5,7 @@ const viewAllUsers = async (req, res) => {
   try {
     const users = await usersService.viewAllUsers();
 
-    res.status(201).json({ users });
+    res.status(200).json({ users });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -16,7 +16,7 @@ const userSignUp = async (req, res) => {
     const { email, name, password } = req.body;
     const newUsers = await usersService.userSignUp(req);
 
-    res.status(201).json({ email, name, password });
+    res.status(200).json({ email, name, password });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -27,7 +27,7 @@ const userLogin = async (req, res) => {
     const { email, password } = req.body;
     const usersRegister = await usersService.userLogin(req);
 
-    res.status(201).json({ email, password });
+    res.status(200).json({ email, password });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
