@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import prisma from '../prisma';
 
-const drinksList = async() => {
+const addDrinksList = async() => {
   const drinks = await prisma.$queryRaw(`
   SELECT drinks.id, drinks.korean_name, drinks.english_name,
   categories.category_name
@@ -13,4 +13,4 @@ const drinksList = async() => {
   return drinks;
 };
 
-export default { drinksList };
+export default { addDrinksList };

@@ -32,14 +32,14 @@ const signUp = async(req) => {
 };
 
 
-const logIn = async(req) => {
+const login = async(req) => {
   const { email, password, name } = req.body;
 
   // 해당 이메일 가진 유저 있는지 확인
   const alreadyUser = await prisma.$exists.user({ email });
 
   if (!alreadyUser) {
-    const error = new Error('PLZ_SIGNUP_FIRST');
+    const error = new Error('PLZ_signUp_FIRST');
     throw error;
   }
 
@@ -51,4 +51,4 @@ const logIn = async(req) => {
 };
 
 
-export default { showAllUsers, signUp, logIn };
+export default { showAllUsers, signUp, login };

@@ -9,8 +9,8 @@ const signUp = async() => {
   return await userDao.signUp(req);
 };
 
-const logIn = async() => {
-  return await userDao.logIn(req);
+const login = async() => {
+  return await userDao.login(req);
 };
 
-export default { showAllUsers, signUp, logIn };
+export default { showAllUsers, signUp, login };

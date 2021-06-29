@@ -11,11 +11,11 @@ const showAllUsers = async(req, res) => {
   }
 };
 
-const postSignUp = async(req, res) => {
+const signUp = async(req, res) => {
   try {
     const { email, password, name } = req.body();
 
-    const newUser = await userService.postSignUp(req);
+    const newUser = await userService.signUp(req);
 
     res.status(201).json({ email, password, name });
   } catch (err) {
@@ -23,11 +23,11 @@ const postSignUp = async(req, res) => {
   }
 };
 
-const postLogIn = async(req, res) => {
+const login = async(req, res) => {
   try {
     const { email, name } = req.body();
 
-    const checkUser = await userService.postLogIn(req);
+    const checkUser = await userService.login(req);
 
     res.status(201).json({ email, name });
   } catch (err) {
@@ -35,4 +35,4 @@ const postLogIn = async(req, res) => {
   }
 };
 
-export default { showAllUsers, postSignUp, postLogIn };
+export default { showAllUsers, signUp, login };
