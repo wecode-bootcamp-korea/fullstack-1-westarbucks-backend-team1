@@ -39,7 +39,7 @@ const logIn = async(req) => {
   const alreadyUser = await prisma.$exists.user({ email });
 
   if (!alreadyUser) {
-    const error = new Error('Oops! Plz Sign Up FIRST!');
+    const error = new Error('PLZ_SIGNUP_FIRST');
     throw error;
   }
 
