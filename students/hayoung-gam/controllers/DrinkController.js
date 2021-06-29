@@ -1,8 +1,8 @@
 import { DrinkService } from '../services';
 
-const getDrinksList = async (req, res) => {
+const findDrinksList = async (req, res) => {
   try {
-    const drinks = await DrinkService.getDrinksList();
+    const drinks = await DrinkService.findDrinksList();
 
     res.status(200).json({ drinks });
   } catch (err) {
@@ -10,4 +10,4 @@ const getDrinksList = async (req, res) => {
   }
 };
 
-export default { getDrinksList };
+export default { findDrinksList };

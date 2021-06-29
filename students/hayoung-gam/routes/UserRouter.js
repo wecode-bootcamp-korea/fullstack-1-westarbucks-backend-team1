@@ -4,8 +4,8 @@ import validateToken from '../middlewares/validateToken';
 
 const router = express.Router();
 
-router.get('/', UserController.getUsersList);
-router.post('/signup', UserController.postSignUp);
-router.post('/login', validateToken, UserController.postLogIn);
+router.get('/', UserController.findUsersList);
+router.post('/signup', UserController.signUp);
+router.post('/login', validateToken, UserController.logIn);
 
 export default router;

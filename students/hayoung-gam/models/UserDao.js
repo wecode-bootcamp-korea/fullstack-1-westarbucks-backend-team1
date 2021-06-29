@@ -5,29 +5,29 @@ import errorGenerator from '../utils/errorGenerator';
 
 const { JWT_SECRET_KEY } = process.env;
 
-const getUsersList = async () => {
+const findUsersList = async () => {
   const users = await prisma.$queryRaw(`SELECT * FROM users;`);
 
   return users;
 };
 
-const postSignUp = async (req) => {
+const signUp = async (req) => {
   const { email, name, password } = req.body;
   const saltRounds = 10;
 
   const salt = await bcrypt.genSalt(saltRounds);
   const hashedPassword = await bcrypt.hash(password, salt);
 
-  const signUp = await prisma.$queryRaw(`
+  const signedUp = await prisma.$queryRaw(`
     INSERT INTO users (email, name, password)
     SELECT '${email}', '${name}', '${hashedPassword}'
     WHERE NOT EXISTS (SELECT email FROM users WHERE email='${email}');
   `);
 
-  return signUp;
+  return signedUp;
 };
 
-const postLogIn = async (req, res) => {
+const logIn = async (req, res) => {
   const { email, password } = req.body;
 
   const userExists = await prisma.users.findUnique({ where: { email } });
@@ -43,4 +43,4 @@ const postLogIn = async (req, res) => {
   return token;
 };
 
-export default { getUsersList, postSignUp, postLogIn };
+export default { findUsersList, signUp, logIn };

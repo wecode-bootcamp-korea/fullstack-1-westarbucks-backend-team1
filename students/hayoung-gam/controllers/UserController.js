@@ -1,8 +1,8 @@
 import { UserService } from '../services';
 
-const getUsersList = async (req, res) => {
+const findUsersList = async (req, res) => {
   try {
-    const users = await UserService.getUsersList();
+    const users = await UserService.findUsersList();
 
     res.status(200).json({ users });
   } catch (err) {
@@ -10,11 +10,11 @@ const getUsersList = async (req, res) => {
   }
 };
 
-const postSignUp = async (req, res) => {
+const signUp = async (req, res) => {
   try {
     const { email, name, password } = req.body;
 
-    const createdNewUser = await UserService.postSignUp(req);
+    const createdNewUser = await UserService.signUp(req);
 
     res.status(201).json({ email, name, password });
   } catch (err) {
@@ -22,11 +22,11 @@ const postSignUp = async (req, res) => {
   }
 };
 
-const postLogIn = async (req, res) => {
+const logIn = async (req, res) => {
   try {
     const { email, name, password } = req.body;
 
-    const token = await UserService.postLogIn(req, res);
+    const token = await UserService.logIn(req, res);
 
     res
       .status(201)
@@ -36,4 +36,4 @@ const postLogIn = async (req, res) => {
   }
 };
 
-export default { getUsersList, postSignUp, postLogIn };
+export default { findUsersList, signUp, logIn };

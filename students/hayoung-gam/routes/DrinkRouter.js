@@ -3,6 +3,6 @@ import { DrinkController } from '../controllers';
 
 const router = express.Router();
 
-router.get('/', DrinkController.getDrinksList);
+router.get('/', DrinkController.findDrinksList);
 
 export default router;

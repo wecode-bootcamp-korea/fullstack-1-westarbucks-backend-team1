@@ -1,15 +1,15 @@
 import { UserDao } from '../models';
 
-const getUsersList = async () => {
-  return await UserDao.getUsersList();
+const findUsersList = async () => {
+  return await UserDao.findUsersList();
 };
 
-const postSignUp = async (req) => {
-  return await UserDao.postSignUp(req);
+const signUp = async (req) => {
+  return await UserDao.signUp(req);
 };
 
-const postLogIn = async (req, res) => {
-  return await UserDao.postLogIn(req, res);
+const logIn = async (req, res) => {
+  return await UserDao.logIn(req, res);
 };
 
-export default { getUsersList, postSignUp, postLogIn };
+export default { findUsersList, signUp, logIn };
