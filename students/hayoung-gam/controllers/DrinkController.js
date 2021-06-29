@@ -4,7 +4,7 @@ const getDrinksList = async (req, res) => {
   try {
     const drinks = await DrinkService.getDrinksList();
 
-    res.status(201).json({ drinks });
+    res.status(200).json({ drinks });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
