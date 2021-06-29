@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import prisma from '../prisma';
-import bcrypt, { hash } from 'bcrypt';
+import bcrypt from 'bcrypt';
 
 const viewAllUsers = async () => {
   const users = await prisma.$queryRaw('SELECT * FROM users');
@@ -19,12 +19,12 @@ const userSignUp = async (req) => {
 
   const saltRounds = 10;
 
-  const salt = bcrypt.genSaltSync(saltRounds);
-  const hashedPassword = bcrypt.hashSync(password, salt);
+  const salt = await bcrypt.genSalt(saltRounds);
+  const hashedPassword = await bcrypt.hash(password, salt);
 
   const createdUser = await prisma.$queryRaw(`
         INSERT INTO users(email, name, password) 
-        VALUES ('${email}', '${name}','${password}')
+        VALUES ('${email}', '${name}','${hashedPassword}')
       `);
   return createdUser;
 };
@@ -42,6 +42,12 @@ const userLogin = async (req, res) => {
   const { email: id, password: hashedPassword } = usersRegistered;
 
   const isPasswordVerified = await bcrypt.compare(password, hashedPassword);
+
+  if (!isPasswordVerified) {
+    const error = new Error('비밀번호가 일치하지 않습니다.');
+    error.statusCode = 404;
+    throw error;
+  }
 
   return isPasswordVerified;
 };
