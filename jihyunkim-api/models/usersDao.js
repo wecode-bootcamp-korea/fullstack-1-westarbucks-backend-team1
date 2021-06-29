@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import prisma from '../prisma';
-import bcrypt from 'bcrypt';
+import bcrypt, { hash } from 'bcrypt';
 
 const viewAllUsers = async () => {
   const users = await prisma.$queryRaw('SELECT * FROM users');
@@ -31,19 +31,19 @@ const userSignUp = async (req) => {
 
 const userLogin = async (req, res) => {
   const { email, password } = req.body;
-  const usersRegister = await prisma.users.findUnique({ where: { email } });
+  const usersRegistered = await prisma.users.findUnique({ where: { email } });
 
-  if (!usersRegister) {
+  if (!usersRegistered) {
     const error = new Error('해당 유저 정보가 존재하지 않습니다');
     error.statusCode = 404;
     throw error;
   }
 
-  const { id, password: hashedPassword } = usersRegister;
+  const { email: id, password: hashedPassword } = usersRegistered;
 
-  const verifypassword = await bcrypt.compare(password, hashedPassword);
+  const isPasswordVerified = await bcrypt.compare(password, hashedPassword);
 
-  return verifypassword;
+  return isPasswordVerified;
 };
 
 export default { viewAllUsers, userSignUp, userLogin };
