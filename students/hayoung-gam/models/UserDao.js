@@ -33,7 +33,7 @@ const logIn = async (req, res) => {
 
   const userExists = await prisma.users.findUnique({ where: { email } });
   if (!userExists) {
-    const err = new Error('USER DOES NOT EXISTS.');
+    const err = new Error('USER_DOES_NOT_EXISTS.');
     err.statusCode = 404;
     throw err;
   }
@@ -41,7 +41,7 @@ const logIn = async (req, res) => {
 
   const isMatch = await bcrypt.compare(password, hashedPassword);
   if (!isMatch) {
-    const err = new Error('INCORRECT PASSWORD.');
+    const err = new Error('INCORRECT_PASSWORD.');
     err.statusCode = 401;
     throw err;
   }
