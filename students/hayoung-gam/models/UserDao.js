@@ -19,7 +19,9 @@ const postSignUp = async (req) => {
   const hashedPassword = await bcrypt.hash(password, salt);
 
   const signUp = await prisma.$queryRaw(`
-    INSERT INTO users (email, name, password) SELECT '${email}', '${name}', '${hashedPassword}' WHERE NOT EXISTS (SELECT email FROM users WHERE email='${email}');
+    INSERT INTO users (email, name, password)
+    SELECT '${email}', '${name}', '${hashedPassword}'
+    WHERE NOT EXISTS (SELECT email FROM users WHERE email='${email}');
   `);
 
   return signUp;
