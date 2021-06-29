@@ -12,7 +12,7 @@ const userSignUp = async (req) => {
   const { email, name, password } = req.body;
 
   if (!email || !password) {
-    const error = new Error('필수 정보를 입력해주세요 ☄️ ');
+    const error = new Error('PLEASE_INSERT_THE_ESSENTIAL_INFORMATION');
     error.statusCode = 400;
     throw error;
   }
@@ -34,7 +34,7 @@ const userLogin = async (req, res) => {
   const usersRegistered = await prisma.users.findUnique({ where: { email } });
 
   if (!usersRegistered) {
-    const error = new Error('해당 유저 정보가 존재하지 않습니다');
+    const error = new Error('USER_INFORMATION_THAT_DOES_NOT_EXIST');
     error.statusCode = 404;
     throw error;
   }
@@ -44,7 +44,7 @@ const userLogin = async (req, res) => {
   const isPasswordVerified = await bcrypt.compare(password, hashedPassword);
 
   if (!isPasswordVerified) {
-    const error = new Error('비밀번호가 일치하지 않습니다.');
+    const error = new Error('PASSWORD_DOES_NOT_MATCH');
     error.statusCode = 404;
     throw error;
   }
