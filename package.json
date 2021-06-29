@@ -22,5 +22,8 @@
   },
   "scripts": {
     "dev": "nodemon --exec babel-node students/hayoung-gam/server.js"
+  },
+  "prisma": {
+    "schema": "students/hayoung-gam/prisma/schema.prisma"
   }
 }
