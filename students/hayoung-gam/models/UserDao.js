@@ -1,7 +1,6 @@
 import prisma from '../prisma';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import errorGenerator from '../utils/errorGenerator';
 
 const { JWT_SECRET_KEY } = process.env;
 
@@ -33,13 +32,19 @@ const logIn = async (req, res) => {
   const { email, password } = req.body;
 
   const userExists = await prisma.users.findUnique({ where: { email } });
-  if (!userExists)
-    errorGenerator({ statusCode: 404, message: 'USER DOES NOT EXISTS.' });
+  if (!userExists) {
+    const err = new Error('USER DOES NOT EXISTS.');
+    err.statusCode = 404;
+    throw err;
+  }
   const { email: id, password: hashedPassword } = userExists;
 
   const isMatch = await bcrypt.compare(password, hashedPassword);
-  if (!isMatch)
-    errorGenerator({ statusCode: 400, message: 'INCORRECT PASSWORD.' });
+  if (!isMatch) {
+    const err = new Error('INCORRECT PASSWORD.');
+    err.statusCode = 401;
+    throw err;
+  }
 
   const token = jwt.sign({ id }, JWT_SECRET_KEY, { expiresIn: '7d' });
   return token;
