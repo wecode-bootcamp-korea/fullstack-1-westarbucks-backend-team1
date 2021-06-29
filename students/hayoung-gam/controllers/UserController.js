@@ -4,7 +4,7 @@ const findUsersList = async (req, res) => {
   try {
     const users = await UserService.findUsersList();
 
-    res.status(200).json({ users });
+    res.status(200).json({ message: 'LIST_ALL_USERS_SUCCESS', users });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -12,11 +12,11 @@ const findUsersList = async (req, res) => {
 
 const signUp = async (req, res) => {
   try {
-    const { email, name, password } = req.body;
+    const { email, name } = req.body;
 
     const createdNewUser = await UserService.signUp(req);
 
-    res.status(201).json({ email, name, password });
+    res.status(201).json({ message: 'SIGN_UP_SUCCESS', email, name });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -24,13 +24,11 @@ const signUp = async (req, res) => {
 
 const logIn = async (req, res) => {
   try {
-    const { email, name, password } = req.body;
+    const { email, name } = req.body;
 
     const token = await UserService.logIn(req, res);
 
-    res
-      .status(201)
-      .json({ email, name, password, message: 'LOGIN SUCCESS', token });
+    res.status(201).json({ message: 'LOGIN_SUCCESS', email, name, token });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

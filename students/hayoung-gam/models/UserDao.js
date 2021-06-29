@@ -6,7 +6,9 @@ import errorGenerator from '../utils/errorGenerator';
 const { JWT_SECRET_KEY } = process.env;
 
 const findUsersList = async () => {
-  const users = await prisma.$queryRaw(`SELECT * FROM users;`);
+  const users = await prisma.$queryRaw(
+    `SELECT id, email, name, favorite, created_at FROM users;`
+  );
 
   return users;
 };
