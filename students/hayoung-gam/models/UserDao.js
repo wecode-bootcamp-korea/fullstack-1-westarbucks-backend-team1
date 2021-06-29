@@ -19,6 +19,16 @@ const signUp = async (req) => {
   const salt = await bcrypt.genSalt(saltRounds);
   const hashedPassword = await bcrypt.hash(password, salt);
 
+  const [checkUsedEmail] = await prisma.$queryRaw(`
+    SELECT IF (EXISTS (SELECT email FROM users WHERE email='${email}'), 1, 0);
+  `);
+
+  if (checkUsedEmail[Object.keys(checkUsedEmail)[0]]) {
+    const err = new Error('THIS_EMAIL_IS_ALREADY_IN_USED.');
+    err.statusCode = 409;
+    throw err;
+  }
+
   const signedUp = await prisma.$queryRaw(`
     INSERT INTO users (email, name, password)
     SELECT '${email}', '${name}', '${hashedPassword}'
