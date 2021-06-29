@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
 import prisma from '../prisma';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+const TOKEN_KEY = '' + process.env.SECRET_KEY;
 
 const viewAllUsers = async () => {
   const users = await prisma.$queryRaw('SELECT * FROM users');
@@ -49,7 +52,8 @@ const userLogin = async (req, res) => {
     throw error;
   }
 
-  return isPasswordVerified;
+  const token = jwt.sign({ id }, TOKEN_KEY);
+  return token;
 };
 
 export default { viewAllUsers, userSignUp, userLogin };
