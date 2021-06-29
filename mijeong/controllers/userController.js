@@ -5,29 +5,17 @@ const showAllUsers = async(req, res) => {
   try {
     const users = await userService.showAllUsers(req);
 
-    res.status(201).json({ users });
+    res.status(200).json({ users });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-const signUp = async(req, res) => {
-  try {
-    const { email, password, name } = req.body;
-
-    const newUser = await userService.signUp(req);
-
-    res.status(201).json({ email, password, name });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-const logIn = async(req, res) => {
+const postSignUp = async(req, res) => {
   try {
     const { email, password, name } = req.body();
 
-    const checkUser = await userService.logIn(req);
+    const newUser = await userService.postSignUp(req);
 
     res.status(201).json({ email, password, name });
   } catch (err) {
@@ -35,4 +23,16 @@ const logIn = async(req, res) => {
   }
 };
 
-export default { showAllUsers, signUp, logIn };
+const postLogIn = async(req, res) => {
+  try {
+    const { email, name } = req.body();
+
+    const checkUser = await userService.postLogIn(req);
+
+    res.status(201).json({ email, name });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+export default { showAllUsers, postSignUp, postLogIn };
