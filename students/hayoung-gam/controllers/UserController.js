@@ -6,7 +6,7 @@ const findUsersList = async (req, res) => {
 
     res.status(200).json({ message: 'LIST_ALL_USERS_SUCCESS', users });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(err.statusCode || 500).json({ message: err.message });
   }
 };
 
@@ -18,7 +18,7 @@ const signUp = async (req, res) => {
 
     res.status(201).json({ message: 'SIGN_UP_SUCCESS', email, name });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(err.statusCode || 500).json({ message: err.message });
   }
 };
 
@@ -30,7 +30,7 @@ const logIn = async (req, res) => {
 
     res.status(201).json({ message: 'LOGIN_SUCCESS', email, name, token });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(err.statusCode || 500).json({ message: err.message });
   }
 };
 
