@@ -5,11 +5,11 @@ const showAllUsers = async() => {
   return await userDao.showAllUsers();
 };
 
-const signUp = async() => {
+const signUp = async(req) => {
   return await userDao.signUp(req);
 };
 
-const login = async() => {
+const login = async(req) => {
   return await userDao.login(req);
 };
 
