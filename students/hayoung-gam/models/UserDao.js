@@ -34,11 +34,11 @@ const signUp = async (req) => {
     throw err;
   }
 
-  const signedUp = await prisma.$queryRaw(`
+  const signedUp = await prisma.$queryRaw`
     INSERT INTO users (email, name, password)
-    SELECT '${email}', '${name}', '${hashedPassword}'
-    WHERE NOT EXISTS (SELECT email FROM users WHERE email='${email}');
-  `);
+    SELECT ${email}, ${name}, ${hashedPassword}
+    WHERE NOT EXISTS (SELECT email FROM users WHERE email=${email});
+  `;
 
   return signedUp;
 };
