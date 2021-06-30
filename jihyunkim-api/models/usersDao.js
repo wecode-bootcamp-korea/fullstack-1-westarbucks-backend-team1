@@ -52,7 +52,9 @@ const userLogin = async (req, res) => {
     throw error;
   }
 
-  const token = jwt.sign({ id }, TOKEN_KEY);
+  const token = jwt.sign({ id }, TOKEN_KEY, { expiresIn: '1h' });
+  console.log('이건 토큰', token);
+
   return token;
 };
 
