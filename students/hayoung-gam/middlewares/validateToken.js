@@ -3,17 +3,22 @@ const { JWT_SECRET_KEY } = process.env;
 
 const validateToken = (req, res, next) => {
   try {
-    const [bearer, token] = req.headers.authorization.split(' ');
-
-    if (token) {
-      const decodedToken = jwt.verify(token, JWT_SECRET_KEY);
+    let token = '';
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.split(' ')[0] === 'Bearer'
+    ) {
+      token = req.headers.authorization.split(' ')[1];
     } else {
       const err = new Error('TOKEN_REQUIRED.');
       err.statusCode = 401;
       throw err;
     }
 
-    next();
+    jwt.verify(token, JWT_SECRET_KEY, function (err, decoded) {
+      req.decoded = decoded;
+      next();
+    });
   } catch (err) {
     next(err);
   }
