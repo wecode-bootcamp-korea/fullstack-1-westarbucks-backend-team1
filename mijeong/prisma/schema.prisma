@@ -57,12 +57,12 @@ model drink_allergies {
 
 model nutritions {
   id               Int      @id @default(autoincrement())
-  one_serving_kcal Decimal?
-  sodium_mg        Decimal?
-  saturated_fat_g  Decimal?
-  sugars_g         Decimal?
-  protein_g        Decimal?
-  caffeine_mg      Decimal?
+  one_serving_kcal Decimal? @db.Decimal(5,2)
+  sodium_mg        Decimal? @db.Decimal(5,2)
+  saturated_fat_g  Decimal? @db.Decimal(5,2)
+  sugars_g         Decimal? @db.Decimal(5,2)
+  protein_g        Decimal? @db.Decimal(5,2)
+  caffeine_mg      Decimal? @db.Decimal(5,2)
   drink_id         Int
   created_at       DateTime @default(now())
   drinks           drinks   @relation(fields: [drink_id], references: [id])
