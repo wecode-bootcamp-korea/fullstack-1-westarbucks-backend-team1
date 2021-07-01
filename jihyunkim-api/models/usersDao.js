@@ -1,61 +1,34 @@
 /* eslint-disable no-unused-vars */
 import prisma from '../prisma';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
-const TOKEN_KEY = '' + process.env.SECRET_KEY;
-
-const viewAllUsers = async () => {
-  const users = await prisma.$queryRaw('SELECT * FROM users');
-
-  return users;
+const getUsers = async () => {
+  return await prisma.$queryRaw('SELECT * FROM users');
 };
 
-const userSignUp = async (req) => {
-  const { email, name, password } = req.body;
-
-  if (!email || !password) {
-    const error = new Error('PLEASE_INSERT_THE_ESSENTIAL_INFORMATION');
-    error.statusCode = 400;
-    throw error;
-  }
-
-  const saltRounds = 10;
-
-  const salt = await bcrypt.genSalt(saltRounds);
-  const hashedPassword = await bcrypt.hash(password, salt);
-
-  const createdUser = await prisma.$queryRaw(`
-        INSERT INTO users(email, name, password) 
-        VALUES ('${email}', '${name}','${hashedPassword}')
-      `);
-  return createdUser;
+const getEmail = async (email) => {
+  return await prisma.$queryRaw(`
+    SELECT email FROM users WHERE email='${email}'`);
 };
 
-const userLogin = async (req, res) => {
-  const { email, password } = req.body;
-  const usersRegistered = await prisma.users.findUnique({ where: { email } });
-
-  if (!usersRegistered) {
-    const error = new Error('USER_INFORMATION_THAT_DOES_NOT_EXIST');
-    error.statusCode = 404;
-    throw error;
-  }
-
-  const { email: id, password: hashedPassword } = usersRegistered;
-
-  const isPasswordVerified = await bcrypt.compare(password, hashedPassword);
-
-  if (!isPasswordVerified) {
-    const error = new Error('PASSWORD_DOES_NOT_MATCH');
-    error.statusCode = 404;
-    throw error;
-  }
-
-  const token = jwt.sign({ id }, TOKEN_KEY, { expiresIn: '1h' });
-  console.log('이건 토큰', token);
-
-  return token;
+const getPassword = async (password) => {
+  return await prisma.$queryRaw(`
+    SELECT password FROM users WHERE password='${password}'`);
 };
 
-export default { viewAllUsers, userSignUp, userLogin };
+const createUser = async (email, name, password) => {
+  return await prisma.$queryRaw(`
+    INSERT INTO 
+      users(
+        email, 
+        name,
+        password
+      )
+    VALUES (
+      '${email}',
+      '${name}',
+      '${password}'
+    )
+  `);
+};
+
+export default { getUsers, getEmail, getPassword, createUser };

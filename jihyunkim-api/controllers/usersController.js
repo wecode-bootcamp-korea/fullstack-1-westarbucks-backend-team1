@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { usersService } from '../services';
+import jwt from 'jsonwebtoken';
+const TOKEN_KEY = '' + process.env.SECRET_KEY;
 
-const viewAllUsers = async (req, res) => {
+const findAllUsers = async (req, res) => {
   try {
-    const users = await usersService.viewAllUsers();
-
+    const users = await usersService.findAllUsers();
     res.status(200).json({ users });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -14,23 +15,31 @@ const viewAllUsers = async (req, res) => {
 const userSignUp = async (req, res) => {
   try {
     const { email, name, password } = req.body;
-    const newUsers = await usersService.userSignUp(req);
+    await usersService.userSignUp(email, name, password);
 
-    res.status(200).json({ email, name, password });
+    res.status(201).json({
+      message: 'USER_CREATED_SUCCESSFULLY',
+    });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      message: err.message,
+    });
   }
 };
 
 const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const usersRegister = await usersService.userLogin(req);
+    await usersService.userLogin(email, password);
 
-    res.status(200).json({ email, password });
+    const token = jwt.sign({ email }, TOKEN_KEY, { expiresIn: '1h' });
+
+    res.status(200).json({ message: 'LOGIN_SUCCESS!', token });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({
+      message: err.message,
+    });
   }
 };
 
-export default { viewAllUsers, userSignUp, userLogin };
+export default { findAllUsers, userSignUp, userLogin };
