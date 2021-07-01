@@ -47,7 +47,7 @@ const login = async(req, res) => {
   const alreadyUser = await prisma.users.findUnique({ where: {email} });
 
   if (!alreadyUser) {
-    const error = new Error('YOU_RE_NOT_USER_YET');
+    const error = new Error('OOPS_PLZ_SIGN_UP_FIRST');
     error.statusCode = 404;
     throw error;
   }
@@ -55,9 +55,10 @@ const login = async(req, res) => {
   const { email: id, password: hashedPw} = alreadyUser;
 
   const isVerifiedPW = await bcrypt.compare(password, hashedPw);
+
   if (!isVerifiedPW){
     const error = new Error('PASSWORD_IS_NOT_CORRECT');
-    error.statusCode = 404;
+    error.statusCode = 401;
     throw error;
   }
 
