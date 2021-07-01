@@ -1,7 +1,7 @@
 import prisma from '../prisma';
 
-const viewAllDrinks = async () => {
-  const drinks = await prisma.$queryRaw(
+const getAllDrinks = async () => {
+  return await prisma.$queryRaw(
     `SELECT 
         drinks.id, drinks.korean_name, drinks.english_name,
         categories.category_name, 
@@ -28,8 +28,6 @@ const viewAllDrinks = async () => {
       ON 
         allergies.id = drink_allergies.allergy_id`
   );
-
-  return drinks;
 };
 
-export default { viewAllDrinks };
+export default { getAllDrinks };
