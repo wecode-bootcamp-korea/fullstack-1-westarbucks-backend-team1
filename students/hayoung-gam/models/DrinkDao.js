@@ -1,6 +1,6 @@
 import prisma from '../prisma';
 
-const findDrinksList = async () => {
+const getAllDrinks = async () => {
   const drinks = await prisma.$queryRaw(`
       SELECT drinks.id, drinks.korean_name, drinks.english_name, categories.category_name, nutritions.one_serving_kcal, nutritions.sodium_mg, nutritions.saturated_fat_g, nutritions.sugars_g, nutritions.protein_g, nutritions.caffeine_mg, allergies.allergy
       FROM drinks
@@ -16,4 +16,4 @@ const findDrinksList = async () => {
   return drinks;
 };
 
-export default { findDrinksList };
+export default { getAllDrinks };
