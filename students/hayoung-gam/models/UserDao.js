@@ -29,9 +29,18 @@ const getUser = async (email) => {
   return await prisma.users.findUnique({ where: { email } });
 };
 
+const updateUserName = async (tokenEmail, name) => {
+  return await prisma.$queryRaw(`
+    UPDATE users
+    SET name='${name}'
+    WHERE email = '${tokenEmail}';
+  `);
+};
+
 export default {
   getAllUsers,
   checkEmailExists,
   createUser,
   getUser,
+  updateUserName,
 };

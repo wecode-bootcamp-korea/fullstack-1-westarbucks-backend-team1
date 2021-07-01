@@ -38,4 +38,14 @@ const logIn = async (email, password) => {
   }
 };
 
-export default { findAllUsers, signUp, logIn };
+const updateUserInfo = async (tokenEmail, name) => {
+  if (!name) {
+    const err = new Error('PLEASE_ENTER_YOUR_NAME.');
+    err.statusCode = 404;
+    throw err;
+  }
+
+  return await UserDao.updateUserName(tokenEmail, name);
+};
+
+export default { findAllUsers, signUp, logIn, updateUserInfo };

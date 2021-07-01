@@ -39,4 +39,16 @@ const logIn = async (req, res) => {
   }
 };
 
-export default { findAllUsers, signUp, logIn };
+const updateUserInfo = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const { email: tokenEmail } = req.decoded;
+    await UserService.updateUserInfo(tokenEmail, name);
+
+    res.status(200).json({ message: 'USER_INFO_UPDATE_SUCCESS' });
+  } catch (err) {
+    res.status(err.statusCode || 500).json({ message: err.message });
+  }
+};
+
+export default { findAllUsers, signUp, logIn, updateUserInfo };
