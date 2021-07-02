@@ -1,3 +1,8 @@
 {
-  "extends": "strongloop"
+  "extends": "airbnb-base",
+  "parser": "babel-eslint",
+  "rules": {
+    "no-console": "off",
+    "lmplicit-arrow-linebreak": "below"
+  }
 }
