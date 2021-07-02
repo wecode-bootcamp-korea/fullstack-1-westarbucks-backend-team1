@@ -14,7 +14,7 @@ const findAllUsers = async (req, res) => {
 
 const userSignUp = async (req, res) => {
   try {
-    const { email, name, password } = req.body;
+    const { email, name, password, address } = req.body;
     await usersService.userSignUp(email, name, password);
 
     res.status(201).json({
@@ -42,4 +42,17 @@ const userLogin = async (req, res) => {
   }
 };
 
-export default { findAllUsers, userSignUp, userLogin };
+const changePassword = async (req, res) => {
+  try {
+    const { name, password } = req.body;
+    await usersService.changePassword(name, password);
+
+    res.status(201).json({ message: 'PASSWORD_CHANGED_SUCCESSFULLY' });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
+export default { findAllUsers, userSignUp, userLogin, changePassword };

@@ -19,7 +19,7 @@ const userSignUp = async (email, name, password) => {
     throw error;
   }
 
-  return await usersDao.createUser(email, name, hashedPassword);
+  return await usersDao.createUser(email, name, password);
 };
 
 const userLogin = async (email, password) => {
@@ -37,6 +37,25 @@ const userLogin = async (email, password) => {
     err.statusCode = 404;
     throw err;
   }
+
+  const { password: hashedPassword } = findUsersbyPassword;
+
+  const comparePassword = await bcrypt.compare(password, hashedPassword);
+  if (!comparePassword) {
+    const err = new Error('INVALID_PASSWORD');
+    err.statusCode = 404;
+    throw err;
+  }
 };
 
-export default { findAllUsers, userSignUp, userLogin };
+const changePassword = async (name, password) => {
+  if (password.length < 5) {
+    const error = new Error('TOO_SHORT_PASSWORD');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  return await usersDao.changePassword(name, password);
+};
+
+export default { findAllUsers, userSignUp, userLogin, changePassword };

@@ -31,4 +31,15 @@ const createUser = async (email, name, password) => {
   `);
 };
 
-export default { getUsers, getEmail, getPassword, createUser };
+const changePassword = async (name, password) => {
+  return await prisma.$queryRaw(`
+    UPDATE
+      users
+    SET
+      password = '${password}'
+    WHERE
+      name='${name}'
+  `);
+};
+
+export default { getUsers, getEmail, getPassword, createUser, changePassword };
