@@ -1,5 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { userService } from '../services';
+import jwt from 'jsonwebtoken';
+
+const TOKEN_KEY = '' + process.env.JWT_SECRET_KEY;
 
 const showAllUsers = async(req, res) => {
   try {
@@ -14,9 +17,9 @@ const signUp = async(req, res) => {
   try {
     const { email, name, password } = req.body;
 
-    const newUser = await userService.signUp(req);
+    await userService.signUp(email, name, password);
 
-    res.status(201).json({ email, name, password });
+    res.status(201).json({ email, name});
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -26,9 +29,11 @@ const login = async(req, res) => {
   try {
     const { email, password } = req.body;
 
-    const addUser = await userService.login(req);
+    await userService.login(email, password);
 
-    res.status(201).json({ email, password });
+    const token = jwt.sign({ email }, TOKEN_KEY, {expiresIn: 60 * 24});
+
+    res.status(201).json({ message: 'YOU_ARE_SUCCESSFULLY_LOGGED_IN', token });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
