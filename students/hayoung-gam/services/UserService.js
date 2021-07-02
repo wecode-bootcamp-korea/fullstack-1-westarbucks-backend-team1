@@ -27,13 +27,13 @@ const logIn = async (email, password) => {
   const userInfo = await UserDao.getUser(email);
   let err;
 
-  if (!userInfo) {
+  if (!userInfo.length) {
     err = new Error('USER_DOES_NOT_EXISTS.');
     err.statusCode = 404;
     throw err;
   }
 
-  const { email: emailId, password: hashedPassword } = userInfo;
+  const { email: emailId, password: hashedPassword } = userInfo[0];
   const isMatch = await bcrypt.compare(password, hashedPassword);
   if (!isMatch) {
     err = new Error('INCORRECT_PASSWORD.');

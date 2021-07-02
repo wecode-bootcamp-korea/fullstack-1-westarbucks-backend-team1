@@ -26,7 +26,9 @@ const createUser = async (email, hashedPassword, name) => {
 };
 
 const getUser = async (email) => {
-  return await prisma.users.findUnique({ where: { email } });
+  return await prisma.$queryRaw(`
+    SELECT * FROM users WHERE email='${email}';
+  `);
 };
 
 const updateUserName = async (tokenEmail, name) => {
