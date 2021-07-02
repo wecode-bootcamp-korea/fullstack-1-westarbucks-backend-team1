@@ -1,5 +1,8 @@
 import { UserDao } from '../models';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+const { JWT_SECRET_KEY } = process.env;
 
 const findAllUsers = async () => {
   return await UserDao.getAllUsers();
@@ -21,21 +24,28 @@ const signUp = async (email, password, name) => {
 };
 
 const logIn = async (email, password) => {
-  const checkUserExists = await UserDao.getUser(email);
+  const userInfo = await UserDao.getUser(email);
+  let err;
 
-  if (!checkUserExists) {
-    const err = new Error('USER_DOES_NOT_EXISTS.');
+  if (!userInfo) {
+    err = new Error('USER_DOES_NOT_EXISTS.');
     err.statusCode = 404;
     throw err;
   }
-  const { password: hashedPassword } = checkUserExists;
 
+  const { email: emailId, password: hashedPassword } = userInfo;
   const isMatch = await bcrypt.compare(password, hashedPassword);
   if (!isMatch) {
-    const err = new Error('INCORRECT_PASSWORD.');
+    err = new Error('INCORRECT_PASSWORD.');
     err.statusCode = 401;
     throw err;
   }
+
+  const token = jwt.sign({ emailId }, JWT_SECRET_KEY, {
+    expiresIn: '1d',
+  });
+
+  return token;
 };
 
 const updateUserInfo = async (tokenEmail, name) => {

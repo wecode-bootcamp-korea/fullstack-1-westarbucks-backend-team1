@@ -1,7 +1,4 @@
 import { UserService } from '../services';
-import jwt from 'jsonwebtoken';
-
-const { JWT_SECRET_KEY } = process.env;
 
 const findAllUsers = async (req, res) => {
   try {
@@ -28,12 +25,24 @@ const signUp = async (req, res) => {
 const logIn = async (req, res) => {
   try {
     const { email, password } = req.body;
-    await UserService.logIn(email, password);
+    let err;
 
-    const token = jwt.sign({ email }, JWT_SECRET_KEY, {
-      expiresIn: '1d',
-    });
-    res.status(201).json({ message: 'LOGIN_SUCCESS', token });
+    if (!email && !password) {
+      err = new Error('PLEASE_ENTER_YOUR_EMAIL_AND_PASSWORD.');
+      err.statusCode = 404;
+      throw err;
+    } else if (!email) {
+      err = new Error('PLEASE_ENTER_YOUR_EMAIL.');
+      err.statusCode = 404;
+      throw err;
+    } else if (!password) {
+      err = new Error('PLEASE_ENTER_YOUR_PASSWORD.');
+      err.statusCode = 404;
+      throw err;
+    } else {
+      const token = await UserService.logIn(email, password);
+      res.status(201).json({ message: 'LOGIN_SUCCESS', token });
+    }
   } catch (err) {
     res.status(err.statusCode || 500).json({ message: err.message });
   }
