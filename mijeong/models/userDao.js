@@ -2,35 +2,27 @@
 import prisma from '../prisma';
 
 const showAllUsers = async() => {
-  const alluser = await prisma.$queryRaw(`
+  return await prisma.$queryRaw(`
     SELECT * FROM users;
   `);
-  return alluser;
+};
+
+const getEmail = async(email) => {
+  return await prisma.$queryRaw(`
+  SELECT * FROM users WHERE email = '${email}'`);
 };
 
 
-const signUp = async(email, hashedPw, name) => {
-
+const createUsers = async(email, name, hashedPw) => {
   return await prisma.$queryRaw(`
-    INSERT INTO users(email, password, name)
-    SELECT '${email}', '${hashedPw}', '${name}'
+    INSERT INTO users(email, name, password)
+    SELECT '${email}', '${name}', '${hashedPw}'
     WHERE NOT EXISTS 
     (SELECT email FROM users 
       WHERE email = '${email}')
   `);
 };
 
-const getEmail = async(email) => {
 
-  return await prisma.users.findUnique({ where: {email} });
-
-};
-
-const getPw = async(password) => {
-  return await prisma.$queryRaw(`
-  SELECT password FROM usere WHERE password = '${password}`);
-};
-
-
-export default { showAllUsers, signUp, getPw };
+export default { showAllUsers, getEmail, createUsers};
 

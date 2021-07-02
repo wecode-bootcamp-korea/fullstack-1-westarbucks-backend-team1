@@ -1,13 +1,12 @@
+/* eslint-disable max-len */
 /* eslint-disable no-unused-vars */
 import { userService } from '../services';
-import jwt from 'jsonwebtoken';
 
-const TOKEN_KEY = '' + process.env.JWT_SECRET_KEY;
 
 const showAllUsers = async(req, res) => {
   try {
     const users = await userService.showAllUsers();
-    res.status(200).json({ users });
+    res.status(200).json({ message: 'USERS_LIST', users });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -29,11 +28,14 @@ const login = async(req, res) => {
   try {
     const { email, password } = req.body;
 
-    await userService.login(email, password);
-
-    const token = jwt.sign({ email }, TOKEN_KEY, {expiresIn: 60 * 24});
-
-    res.status(201).json({ message: 'YOU_ARE_SUCCESSFULLY_LOGGED_IN', token });
+    if (!email || !password){
+      const error = new Error('PLZ_FILL_OUT_EVERYTHING');
+      error.statusCode = 404;
+      throw error;
+    } else {
+      const token = await userService.login(email, password);
+      res.status(201).json({ message: 'YOU_ARE_SUCCESSFULLY_LOGGED_IN', token });
+    }
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
