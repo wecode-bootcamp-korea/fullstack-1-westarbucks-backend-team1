@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model categories {
+  id            Int      @id @default(autoincrement())
+  category_name String
+  created_at    DateTime @default(now())
+  drinks        drinks[]
+}
+
+model drinks {
+  id              Int               @id @default(autoincrement())
+  korean_name     String
+  english_name    String?
+  category_id     Int
+  description     String            @db.VarChar(1000)
+  is_new          Boolean
+  created_at      DateTime          @default(now())
+  categories      categories        @relation(fields: [category_id], references: [id])
+  drink_images    drink_images[]
+  drink_allergies drink_allergies[]
+  nutritions      nutritions?
+}
+
+model drink_images {
+  id         Int      @id @default(autoincrement())
+  image_url  String   @db.VarChar(3000)
+  drink_id   Int
+  created_at DateTime @default(now())
+  drinks     drinks   @relation(fields: [drink_id], references: [id])
+}
+
+model allergies {
+  id              Int               @id @default(autoincrement())
+  allergy         String
+  created_at      DateTime          @default(now())
+  drink_allergies drink_allergies[]
+}
+
+model drink_allergies {
+  id         Int       @id @default(autoincrement())
+  drink_id   Int
+  allergy_id Int
+  created_at DateTime  @default(now())
+  allergies  allergies @relation(fields: [allergy_id], references: [id])
+  drinks     drinks    @relation(fields: [drink_id], references: [id])
+}
+
+model nutritions {
+  id               Int      @id @default(autoincrement())
+  one_serving_kcal Decimal? @db.Decimal(5, 1)
+  sodium_mg        Decimal? @db.Decimal(5, 1)
+  saturated_fat_g  Decimal? @db.Decimal(5, 1)
+  sugars_g         Decimal? @db.Decimal(5, 1)
+  protein_g        Decimal? @db.Decimal(5, 1)
+  caffeine_mg      Decimal? @db.Decimal(5, 1)
+  drink_id         Int
+  created_at       DateTime @default(now())
+  drinks           drinks   @relation(fields: [drink_id], references: [id])
+}
+
+model users {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  password   String
+  favorite   String?
+  created_at DateTime @default(now())
+}
