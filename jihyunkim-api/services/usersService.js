@@ -48,14 +48,38 @@ const userLogin = async (email, password) => {
   }
 };
 
-const changePassword = async (name, password) => {
+const updatePassword = async (name, password) => {
   if (password.length < 5) {
     const error = new Error('TOO_SHORT_PASSWORD');
     error.statusCode = 404;
     throw error;
   }
 
-  return await usersDao.changePassword(name, password);
+  return await usersDao.updatePassword(name, password);
 };
 
-export default { findAllUsers, userSignUp, userLogin, changePassword };
+const updateEmail = async (name, email) => {
+  const previousEmail = await usersDao.getEmail(email);
+
+  if (previousEmail.length) {
+    const error = new Error('error');
+    error.statusCode = 409;
+    throw error;
+  }
+
+  if (!email.includes('@')) {
+    const error = new Error('error');
+    error.statusCode = 404;
+    throw error;
+  }
+
+  return await usersDao.updateEmail(name, email);
+};
+
+export default {
+  findAllUsers,
+  userSignUp,
+  userLogin,
+  updatePassword,
+  updateEmail,
+};
