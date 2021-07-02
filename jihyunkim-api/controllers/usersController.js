@@ -1,7 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { usersService } from '../services';
-import jwt from 'jsonwebtoken';
-const TOKEN_KEY = '' + process.env.SECRET_KEY;
 
 const findAllUsers = async (req, res) => {
   try {
@@ -30,9 +28,7 @@ const userSignUp = async (req, res) => {
 const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-    await usersService.userLogin(email, password);
-
-    const token = jwt.sign({ email }, TOKEN_KEY, { expiresIn: '1h' });
+    const token = await usersService.userLogin(email, password);
 
     res.status(200).json({ message: 'LOGIN_SUCCESS!', token });
   } catch (err) {

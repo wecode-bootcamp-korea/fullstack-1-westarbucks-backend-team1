@@ -1,9 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { usersDao } from '../models';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+const TOKEN_KEY = '' + process.env.SECRET_KEY;
 
 const findAllUsers = async () => {
-  return await usersDao.getUsers();
+  return await usersDao.getAllUsers();
 };
 
 const userSignUp = async (email, name, password) => {
@@ -19,33 +21,29 @@ const userSignUp = async (email, name, password) => {
     throw error;
   }
 
-  return await usersDao.createUser(email, name, password);
+  return await usersDao.createUser(email, name, hashedPassword);
 };
 
 const userLogin = async (email, password) => {
-  const findUsers = await usersDao.getEmail(email);
-  const findUsersbyPassword = await usersDao.getPassword(password);
+  const findUsers = await usersDao.getUsers(email);
 
-  if (findUsers.length === 0) {
-    const error = new Error('CANNOT_FIND_CORRECT_USER');
+  if (!findUsers) {
+    const error = new Error('CANNOT_FIND_USER');
     error.statusCode = 404;
     throw error;
   }
 
-  if (findUsersbyPassword.length === 0) {
+  const { email: my_email, password: hashedPassword } = findUsers[0];
+  const comparedPassword = await bcrypt.compare(password, hashedPassword);
+
+  if (!comparedPassword) {
     const err = new Error('INCORRECT_PASSWORD');
-    err.statusCode = 404;
+    err.statusCode = 401;
     throw err;
   }
+  const token = jwt.sign({ my_email }, TOKEN_KEY, { expiresIn: '1h' });
 
-  const { password: hashedPassword } = findUsersbyPassword;
-
-  const comparePassword = await bcrypt.compare(password, hashedPassword);
-  if (!comparePassword) {
-    const err = new Error('INVALID_PASSWORD');
-    err.statusCode = 404;
-    throw err;
-  }
+  return token;
 };
 
 const updatePassword = async (name, password) => {

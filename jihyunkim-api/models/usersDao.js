@@ -1,8 +1,13 @@
 /* eslint-disable no-unused-vars */
 import prisma from '../prisma';
 
-const getUsers = async () => {
+const getAllUsers = async () => {
   return await prisma.$queryRaw('SELECT * FROM users');
+};
+
+const getUsers = async (email) => {
+  return await prisma.$queryRaw(`SELECT * FROM users WHERE email='${email}'
+  `);
 };
 
 const getEmail = async (email) => {
@@ -54,6 +59,7 @@ const updateEmail = async (name, email) => {
 };
 
 export default {
+  getAllUsers,
   getUsers,
   getEmail,
   getPassword,
